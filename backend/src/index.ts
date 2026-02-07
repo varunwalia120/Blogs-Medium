@@ -6,14 +6,18 @@ import { blogRouter } from "./routes/blog";
 
 const app = new Hono();
 
-// ✅ ADD THIS — CORS middleware
+// ✅ CORS middleware (production ready)
 app.use(
   "*",
   cors({
-    origin: "http://localhost:5173",
-    allowMethods: ["GET", "POST", "PUT", "DELETE"],
+    origin: [
+      "http://localhost:5173",                 // local dev
+      "https://blogs-medium-eight.vercel.app", // deployed frontend
+    ],
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowHeaders: ["Content-Type", "Authorization"],
-  }),
+    credentials: true,
+  })
 );
 
 app.route("/api/v1/user", userRouter);
